@@ -44,6 +44,7 @@ func main() {
 
 func start() {
 	var err error
+
 	allCoins, err = getAllCoins()
 	if err != nil {
 		log.Println("err:", err)
@@ -60,7 +61,7 @@ func start() {
 	for _, coin := range allCoins {
 		_, err := readJson(coin)
 		if err != nil {
-			log.Println("err:", err)
+			log.Println("error read json:", err)
 			return
 		}
 	}
@@ -90,7 +91,7 @@ func work() {
 
 			result, err := sendRequest(url)
 			if err != nil {
-				log.Println("err:", err)
+				log.Println("error send request:", err)
 				return
 			}
 
@@ -103,7 +104,7 @@ func work() {
 					coinName := coin.Get("asset").String()
 					data, err := readJson(coinName)
 					if err != nil {
-						log.Println("err:", err)
+						log.Println("error read json:", err)
 						continue
 					}
 					totalBorrowS = data.TotalBorrow
@@ -122,7 +123,7 @@ func work() {
 					}
 					err = writeJson(saveJson, coinName)
 					if err != nil {
-						log.Println("err:", err)
+						log.Println("error write json:", err)
 						continue
 					}
 
@@ -198,7 +199,7 @@ func drawCharts(w http.ResponseWriter, _ *http.Request) {
 	for _, coinName := range allCoins {
 		chart, err := generateChart(coinName)
 		if err != nil {
-			log.Println("err:", err)
+			log.Println("error adding chart:", err)
 			continue
 		}
 		page.AddCharts(
